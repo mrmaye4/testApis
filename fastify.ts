@@ -1,12 +1,18 @@
-import Fastify from "fastify";
-import fastifyOauth2 from "@fastify/oauth2";
-import dotenv from "dotenv";
+import Fastify, { FastifyInstance, FastifyRequest } from "fastify";
+import fastifyOauth2, { OAuth2Token } from "@fastify/oauth2";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const fastify = Fastify({
   logger: true,
-});
+}) as unknown as FastifyInstance & {
+  githubOAuth: {
+    getAccessTokenFromAuthorizationCodeFlow: (
+      request: FastifyRequest,
+    ) => Promise<OAuth2Token>;
+  };
+};
 
 fastify.register(fastifyOauth2, {
   name: "githubOAuth",

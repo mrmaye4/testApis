@@ -1,7 +1,7 @@
 import { Handler, Hono, MiddlewareHandler } from "hono";
 import { serve } from "@hono/node-server";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import * as jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
 
 const { sign, verify } = jwt;
 
@@ -18,11 +18,9 @@ app.post("/login", async (c) => {
 
   // 🔒 Здесь должна быть реальная проверка
   if (username === "admin" && password === "password") {
-    const token =
-      "Bearer " +
-      sign({ username }, JWT_SECRET, {
-        expiresIn: "1h",
-      });
+    const token = sign({ username }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     return c.json({ token });
   }
